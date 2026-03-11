@@ -53,3 +53,39 @@ func pingHandler(w http.ResponseWriter, r *http.Request) {
 
 	writeJSON(w, http.StatusOK, response)
 }
+
+func bandsHandler(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+		case http.MethodGet:
+			handleGetBands(w, r)
+		case http.MethodPOst:
+			handleCreateBand(w, r)
+		default:
+			http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed	)
+	}
+}
+
+func handleGetBands(w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query()
+	idParam := query.Get("id") // busca por ?id=...
+
+	if idParam == "" {
+		writeJSON(w, http.StatusOK, bands)
+		return
+	}
+
+	id, err := strconv.Atoi(idParam) // convierte el id de string a int
+	if err != nil {
+		http.Error(w, "Invalid ID", http.StatusBadRequest)
+		return
+	}
+	
+	for _, band := range bands {
+		if band.ID == id {
+			writeJSON(w, http.StatusOK, band)
+			return
+		}
+	}
+
+	http.Error(w, "Band not found", http.StatusNotFound)
+}
