@@ -33,3 +33,12 @@ func main() {
 	log.Println("POST JSON API running on :80")
 	log.Fatal(http.ListenAndServe(":80", nil))
 }
+
+func LoadBands() {
+	file, err := os.ReadFile("./data/bands.json")
+	if err != nil {
+		log.Fatal("Error reading file:", err)
+	}
+
+	
+}
