@@ -1,21 +1,20 @@
-package main 
+package main
 
 import (
-"encoding/json" // convertir datos de json a struct de go
-"log"			// imprimir mensajes
-"net/http"		// maneja las peticioens y respuestas HTTP
-"os"			// leer archivos e interactuar con el sistema
-"strconv"		// convertir texto a numeros
+	"encoding/json" // convertir datos de json a struct de go
+	"log"           // imprimir mensajes
+	"net/http"      // maneja las peticioens y respuestas HTTP
+	"os"            // leer archivos e interactuar con el sistema
+	"strconv"       // convertir texto a numeros
 )
 
-
 type Band struct {
-	ID int `json:"id"`
-	Name string `json:"name"`
-	Genre string `json:"genre"`
-	Year int `json:"year"`			// año de formación
-	Albums int `json:"albums"`		// cantidad de albumes 
-	Members int `json:"members"`	// cantidad de miembros
+	ID      int    `json:"id"`
+	Name    string `json:"name"`
+	Genre   string `json:"genre"`
+	Year    int    `json:"year"`    // año de formación
+	Albums  int    `json:"albums"`  // cantidad de albumes
+	Members int    `json:"members"` // cantidad de miembros
 }
 
 type Message struct {
@@ -47,7 +46,7 @@ func loadBands() {
 }
 
 func pingHandler(w http.ResponseWriter, r *http.Request) {
-	response := Message {
+	response := Message{
 		Message: "pong",
 	}
 
@@ -56,18 +55,21 @@ func pingHandler(w http.ResponseWriter, r *http.Request) {
 
 func bandsHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
-		case http.MethodGet:
-			handleGetBands(w, r)
-		case http.MethodPOst:
-			handleCreateBand(w, r)
-		default:
-			http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed	)
+	case http.MethodGet:
+		handleGetBands(w, r)
+	case http.MethodPost:
+		handleCreateBand(w, r)
+	default:
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
 	}
 }
 
 func handleGetBands(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 	idParam := query.Get("id") // busca por ?id=...
+	nameParam := query.Get("name")
+	genreParam := query.Get("genre")
+	albumsParam := query.Get("albums")
 
 	if idParam == "" {
 		writeJSON(w, http.StatusOK, bands)
@@ -79,7 +81,7 @@ func handleGetBands(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid ID", http.StatusBadRequest)
 		return
 	}
-	
+
 	for _, band := range bands {
 		if band.ID == id {
 			writeJSON(w, http.StatusOK, band)
@@ -88,4 +90,59 @@ func handleGetBands(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.Error(w, "Band not found", http.StatusNotFound)
+}
+
+func handleCreateBand(w http.ResponseWriter, r *http.Request) {
+	var newband Band
+
+	err := json.NewDecoder(r.Body).Decode(&newband) // para decodificar el cuerpo del json de la request
+	if err != nil {
+		http.Error(w, "Invalid JSON body", http.StatusBadRequest)
+		return
+	}
+
+	if newband.Name == "" || newband.Genre == "" || newband.Year == 0 || newband.Albums == 0 || newband.Members == 0 {
+		http.Error(w, "Missing required fields", http.StatusBadRequest)
+		return
+	}
+
+	newband.ID = generateNextID()
+
+	bands = append(bands, newband)
+
+	writeJSON(w, http.StatusCreated, newband)
+
+}
+
+func generateNextID() int {
+	maxID := 0
+	for _, band := range bands {
+		if band.ID > maxID {
+			maxID = band.ID
+		}
+	}
+	return maxID + 1
+}
+
+func saveBands() {
+	data, err := json.MarshalIndent(bands, "", "  ")
+	if err != nil {
+		log.Println("Error marshaling JSON: ", err)
+		return
+	}
+
+	err = os.WriteFile("./data/bands.json", data, 0644)
+	if err != nil {
+		log.Println("Error writing file: ", err)
+	}
+}
+
+func writeJSON(w http.ResponseWriter, status int, payload interface{}) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(status)
+
+	err := json.NewEncoder(w).Encode(payload)
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+	}
 }
