@@ -6,6 +6,7 @@ import (
 	"net/http"      // maneja las peticioens y respuestas HTTP
 	"os"            // leer archivos e interactuar con el sistema
 	"strconv"       // convertir texto a numeros
+	"strings"
 )
 
 type Band struct {
@@ -70,26 +71,67 @@ func handleGetBands(w http.ResponseWriter, r *http.Request) {
 	nameParam := query.Get("name")
 	genreParam := query.Get("genre")
 	albumsParam := query.Get("albums")
+	yearParam := query.Get("year")
+	membersParam := query.Get("members")
 
-	if idParam == "" {
-		writeJSON(w, http.StatusOK, bands)
-		return
-	}
-
-	id, err := strconv.Atoi(idParam) // convierte el id de string a int
-	if err != nil {
-		http.Error(w, "Invalid ID", http.StatusBadRequest)
-		return
-	}
-
-	for _, band := range bands {
-		if band.ID == id {
-			writeJSON(w, http.StatusOK, band)
+	if idParam != "" { // Buscar por ID
+		id, err := strconv.Atoi(idParam)
+		if err != nil {
+			http.Error(w, "Invalid ID", http.StatusBadRequest)
 			return
 		}
+
+		for _, band := range bands {
+			if band.ID == id {
+				writeJSON(w, http.StatusOK, band)
+				return
+			}
+		}
+		http.Error(w, "Band not found", http.StatusNotFound)
+		return
 	}
 
-	http.Error(w, "Band not found", http.StatusNotFound)
+	var filtered []Band
+	for _, band := range bands {
+		// filtro por nombre
+		if nameParam != "" && !strings.Contains(strings.ToLower(band.Name), strings.ToLower(nameParam)) {
+			continue
+		}
+		// Filtro por Género
+		if genreParam != "" && !strings.EqualFold(band.Genre, genreParam) {
+			continue
+		}
+		// Filtro por Año
+		if yearParam != "" {
+			y, err := strconv.Atoi(yearParam)
+			if err != nil || band.Year != y {
+				continue
+			}
+		}
+		// Filtro por Álbumes
+		if albumsParam != "" {
+			a, err := strconv.Atoi(albumsParam)
+			if err != nil || band.Albums != a {
+				continue
+			}
+		}
+		// Filtro por Miembros
+		if membersParam != "" {
+			m, err := strconv.Atoi(membersParam)
+			if err != nil || band.Members != m {
+				continue
+			}
+		}
+
+		filtered = append(filtered, band)
+	}
+
+	// Si el slice está vacío, lo inicializamos para que devuelva "[]" en vez de "null"
+	if filtered == nil {
+		filtered = []Band{}
+	}
+
+	writeJSON(w, http.StatusOK, filtered)
 }
 
 func handleCreateBand(w http.ResponseWriter, r *http.Request) {
