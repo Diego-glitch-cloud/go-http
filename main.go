@@ -60,6 +60,8 @@ func bandsHandler(w http.ResponseWriter, r *http.Request) {
 		handleGetBands(w, r)
 	case http.MethodPost:
 		handleCreateBand(w, r)
+	case http.MethodDelete:
+		handleDeleteBand(w, r)
 	default:
 		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
 	}
@@ -152,8 +154,35 @@ func handleCreateBand(w http.ResponseWriter, r *http.Request) {
 
 	bands = append(bands, newband)
 
+	saveBands()
+
 	writeJSON(w, http.StatusCreated, newband)
 
+}
+
+func handleDeleteBand(w http.ResponseWriter, r *http.Request) {
+	idParam := r.URL.Query().Get("id")
+	if idParam == "" {
+		http.Error(w, "Missing ID", http.StatusBadRequest)
+		return
+	}
+
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		http.Error(w, "Invalid ID", http.StatusBadRequest)
+		return
+	}
+
+	for i, band := range bands {
+		if band.ID == id {
+			bands = append(bands[:i], bands[i+1:]...) // Borra el elemento i
+			saveBands()                               // Guarda los cambios en el archivo
+			w.WriteHeader(http.StatusNoContent)       // 204: Éxito sin contenido
+			return
+		}
+	}
+
+	http.Error(w, "Band not found", http.StatusNotFound)
 }
 
 func generateNextID() int {
