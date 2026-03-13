@@ -6,7 +6,7 @@ import (
 	"net/http"      // maneja las peticioens y respuestas HTTP
 	"os"            // leer archivos e interactuar con el sistema
 	"strconv"       // convertir texto a numeros
-	"strings"
+	"strings"       // Lo use para manejar cadenas sin distinguir en minusculas o mayusculas
 )
 
 type Band struct {
@@ -62,6 +62,10 @@ func bandsHandler(w http.ResponseWriter, r *http.Request) {
 		handleCreateBand(w, r)
 	case http.MethodDelete:
 		handleDeleteBand(w, r)
+	case http.MethodPut:
+		handlePutBand(w, r)
+	case http.MethodPatch:
+		handlePatchBand(w, r)
 	default:
 		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
 	}
@@ -175,13 +179,104 @@ func handleDeleteBand(w http.ResponseWriter, r *http.Request) {
 
 	for i, band := range bands {
 		if band.ID == id {
-			bands = append(bands[:i], bands[i+1:]...) // Borra el elemento i
-			saveBands()                               // Guarda los cambios en el archivo
-			w.WriteHeader(http.StatusNoContent)       // 204: Éxito sin contenido
+			bands = append(bands[:i], bands[i+1:]...)
+			saveBands()
+			w.WriteHeader(http.StatusNoContent) // 204
 			return
 		}
 	}
 
+	http.Error(w, "Band not found", http.StatusNotFound)
+}
+
+// PUT: Reemplaza TODA la banda (requiere todos los campos)
+func handlePutBand(w http.ResponseWriter, r *http.Request) {
+	idParam := r.URL.Query().Get("id")
+	if idParam == "" {
+		http.Error(w, "Missing ID", http.StatusBadRequest)
+		return
+	}
+
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		http.Error(w, "Invalid ID", http.StatusBadRequest)
+		return
+	}
+
+	var updatedBand Band
+	err = json.NewDecoder(r.Body).Decode(&updatedBand)
+	if err != nil {
+		http.Error(w, "Invalid JSON body", http.StatusBadRequest)
+		return
+	}
+
+	// VALIDACIÓN ESTRICTA: En PUT, es obligatorio mandar todo (igual que en el POST)
+	if updatedBand.Name == "" || updatedBand.Genre == "" || updatedBand.Year == 0 || updatedBand.Albums == 0 || updatedBand.Members == 0 {
+		http.Error(w, "Missing required fields for PUT", http.StatusBadRequest)
+		return
+	}
+
+	for i, band := range bands {
+		if band.ID == id {
+			// Reemplazo total
+			updatedBand.ID = id // Mantenemos el ID original
+			bands[i] = updatedBand
+
+			saveBands()
+			writeJSON(w, http.StatusOK, bands[i])
+			return
+		}
+	}
+
+	http.Error(w, "Band not found", http.StatusNotFound)
+}
+
+// PATCH: Actualiza solo los campos enviados (parcial)
+func handlePatchBand(w http.ResponseWriter, r *http.Request) {
+	idParam := r.URL.Query().Get("id")
+	if idParam == "" {
+		http.Error(w, "Missing ID", http.StatusBadRequest)
+		return
+	}
+
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		http.Error(w, "Invalid ID", http.StatusBadRequest)
+		return
+	}
+
+	var updatedBand Band
+
+	err = json.NewDecoder(r.Body).Decode(&updatedBand)
+	if err != nil {
+		http.Error(w, "Invalid JSON body", http.StatusBadRequest)
+		return
+	}
+
+	for i, band := range bands {
+		if band.ID == id {
+			// Actualizamos solo si el campo NO viene vacío o en cero
+			if updatedBand.Name != "" {
+				bands[i].Name = updatedBand.Name
+			}
+			if updatedBand.Genre != "" {
+				bands[i].Genre = updatedBand.Genre
+			}
+			if updatedBand.Year != 0 {
+				bands[i].Year = updatedBand.Year
+			}
+			if updatedBand.Albums != 0 {
+				bands[i].Albums = updatedBand.Albums
+			}
+			if updatedBand.Members != 0 {
+				bands[i].Members = updatedBand.Members
+			}
+
+			saveBands()
+			writeJSON(w, http.StatusOK, bands[i])
+			return
+		}
+	}
 	http.Error(w, "Band not found", http.StatusNotFound)
 }
 
