@@ -1,6 +1,6 @@
 # API de Bandas en Go
 
-(Readme elaborado con Gemini)
+<!-- (Readme elaborado con Gemini) -->
 
 Este proyecto consiste en una API RESTful construida completamente con la librería estándar de Go. Permite realizar operaciones CRUD (Crear, Leer, Actualizar, Borrar) sobre una colección de bandas de música.
 
