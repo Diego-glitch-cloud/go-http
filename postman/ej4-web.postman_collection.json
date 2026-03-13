@@ -1,0 +1,514 @@
+{
+  "info": {
+    "_postman_id": "96c9e8b9-eb61-4139-82ef-2376e8f9e6d9",
+    "name": "ej4-web",
+    "description": "Estos son las distintas peticiones solicitadas a la API en conjunto con sus respectivas respuestas.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52958973"
+  },
+  "item": [
+    {
+      "name": "http://localhost:41263/api/ping",
+      "request": {
+        "auth": {
+          "type": "inherit"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:41263/api/ping",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "41263",
+          "path": [
+            "api",
+            "ping"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:41263/api/bands",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:41263/api/bands",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "41263",
+          "path": [
+            "api",
+            "bands"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:41263/api/bands?id=10",
+      "request": {
+        "auth": {
+          "type": "inherit"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:41263/api/bands?id=10",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "41263",
+          "path": [
+            "api",
+            "bands"
+          ],
+          "query": [
+            {
+              "key": "id",
+              "value": "10",
+              "sortOrder": 0
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:41263/api/bands?name=metallica",
+      "request": {
+        "auth": {
+          "type": "inherit"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:41263/api/bands?name=metallica",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "41263",
+          "path": [
+            "api",
+            "bands"
+          ],
+          "query": [
+            {
+              "key": "name",
+              "value": "metallica",
+              "sortOrder": 0
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:41263/api/bands?genre=shoegaze&members=4",
+      "request": {
+        "auth": {
+          "type": "inherit"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:41263/api/bands?genre=shoegaze&members=4",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "41263",
+          "path": [
+            "api",
+            "bands"
+          ],
+          "query": [
+            {
+              "key": "genre",
+              "value": "shoegaze",
+              "sortOrder": 0
+            },
+            {
+              "key": "members",
+              "value": "4",
+              "sortOrder": 1
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:41263/api/bands?year=2016",
+      "request": {
+        "auth": {
+          "type": "inherit"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:41263/api/bands?year=2016",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "41263",
+          "path": [
+            "api",
+            "bands"
+          ],
+          "query": [
+            {
+              "key": "year",
+              "value": "2016",
+              "sortOrder": 0
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:41263/api/bands?albums=9",
+      "request": {
+        "auth": {
+          "type": "inherit"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:41263/api/bands?albums=9",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "41263",
+          "path": [
+            "api",
+            "bands"
+          ],
+          "query": [
+            {
+              "key": "albums",
+              "value": "9",
+              "sortOrder": 0
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:41263/api/bands?members=5",
+      "request": {
+        "auth": {
+          "type": "inherit"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:41263/api/bands?members=5",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "41263",
+          "path": [
+            "api",
+            "bands"
+          ],
+          "query": [
+            {
+              "key": "members",
+              "value": "5",
+              "sortOrder": 0
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:41263/api/bands?members=5&albums=9&members=5",
+      "request": {
+        "auth": {
+          "type": "inherit"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:41263/api/bands?members=5&albums=9&members=5",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "41263",
+          "path": [
+            "api",
+            "bands"
+          ],
+          "query": [
+            {
+              "key": "members",
+              "value": "5",
+              "sortOrder": 0
+            },
+            {
+              "key": "albums",
+              "value": "9",
+              "sortOrder": 1
+            },
+            {
+              "key": "members",
+              "value": "5",
+              "sortOrder": 2
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:41263/api/bands?id=89",
+      "request": {
+        "auth": {
+          "type": "inherit"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:41263/api/bands?id=89",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "41263",
+          "path": [
+            "api",
+            "bands"
+          ],
+          "query": [
+            {
+              "key": "id",
+              "value": "89",
+              "sortOrder": 0
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:41263/api/bands",
+      "request": {
+        "auth": {
+          "type": "inherit"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Nirvana\",\r\n  \"genre\": \"Grunge\",\r\n  \"year\": 1987,\r\n  \"albums\": 3,\r\n  \"members\": 3\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "text"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:41263/api/bands",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "41263",
+          "path": [
+            "api",
+            "bands"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:41263/api/bands?name=nirvana",
+      "request": {
+        "auth": {
+          "type": "inherit"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:41263/api/bands?name=nirvana",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "41263",
+          "path": [
+            "api",
+            "bands"
+          ],
+          "query": [
+            {
+              "key": "name",
+              "value": "nirvana",
+              "sortOrder": 0
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:41263/api/bands?id=16",
+      "request": {
+        "auth": {
+          "type": "inherit"
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:41263/api/bands?id=16",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "41263",
+          "path": [
+            "api",
+            "bands"
+          ],
+          "query": [
+            {
+              "key": "id",
+              "value": "16",
+              "sortOrder": 0
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:41263/api/bands?id=20",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"genre\": \"Art Rock\",\r\n    \"year\": 2021\r\n}",
+          "options": {
+            "raw": {
+              "language": "text"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:41263/api/bands?id=20",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "41263",
+          "path": [
+            "api",
+            "bands"
+          ],
+          "query": [
+            {
+              "key": "id",
+              "value": "20"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:41263/api/bands?id=14",
+      "request": {
+        "auth": {
+          "type": "inherit"
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Soundgarden\",\r\n  \"genre\": \"Grunge\",\r\n  \"year\": 1984,\r\n  \"albums\": 6,\r\n  \"members\": 4\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "text"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:41263/api/bands?id=14",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "41263",
+          "path": [
+            "api",
+            "bands"
+          ],
+          "query": [
+            {
+              "key": "id",
+              "value": "14",
+              "sortOrder": 0
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:41263/api/bands?id=14",
+      "request": {
+        "auth": {
+          "type": "inherit"
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Nombre que debe dar error por ser put y no patch\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "text"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:41263/api/bands?id=14",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "41263",
+          "path": [
+            "api",
+            "bands"
+          ],
+          "query": [
+            {
+              "key": "id",
+              "value": "14",
+              "sortOrder": 0
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

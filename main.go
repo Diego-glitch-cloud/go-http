@@ -189,7 +189,6 @@ func handleDeleteBand(w http.ResponseWriter, r *http.Request) {
 	http.Error(w, "Band not found", http.StatusNotFound)
 }
 
-// PUT: Reemplaza TODA la banda (requiere todos los campos)
 func handlePutBand(w http.ResponseWriter, r *http.Request) {
 	idParam := r.URL.Query().Get("id")
 	if idParam == "" {
@@ -210,7 +209,7 @@ func handlePutBand(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// VALIDACIÓN ESTRICTA: En PUT, es obligatorio mandar todo (igual que en el POST)
+	// verificar que vengan todos los campos
 	if updatedBand.Name == "" || updatedBand.Genre == "" || updatedBand.Year == 0 || updatedBand.Albums == 0 || updatedBand.Members == 0 {
 		http.Error(w, "Missing required fields for PUT", http.StatusBadRequest)
 		return
@@ -218,8 +217,7 @@ func handlePutBand(w http.ResponseWriter, r *http.Request) {
 
 	for i, band := range bands {
 		if band.ID == id {
-			// Reemplazo total
-			updatedBand.ID = id // Mantenemos el ID original
+			updatedBand.ID = id
 			bands[i] = updatedBand
 
 			saveBands()
@@ -231,7 +229,6 @@ func handlePutBand(w http.ResponseWriter, r *http.Request) {
 	http.Error(w, "Band not found", http.StatusNotFound)
 }
 
-// PATCH: Actualiza solo los campos enviados (parcial)
 func handlePatchBand(w http.ResponseWriter, r *http.Request) {
 	idParam := r.URL.Query().Get("id")
 	if idParam == "" {
@@ -255,7 +252,7 @@ func handlePatchBand(w http.ResponseWriter, r *http.Request) {
 
 	for i, band := range bands {
 		if band.ID == id {
-			// Actualizamos solo si el campo NO viene vacío o en cero
+
 			if updatedBand.Name != "" {
 				bands[i].Name = updatedBand.Name
 			}

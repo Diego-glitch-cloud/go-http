@@ -105,11 +105,11 @@
   },
   {
     "id": 14,
-    "name": "Ghost",
-    "genre": "Hard Rock",
-    "year": 2006,
-    "albums": 5,
-    "members": 8
+    "name": "Soundgarden",
+    "genre": "Grunge",
+    "year": 1984,
+    "albums": 6,
+    "members": 4
   },
   {
     "id": 15,
@@ -146,8 +146,8 @@
   {
     "id": 20,
     "name": "Candelabro",
-    "genre": "Post-Rock",
-    "year": 2019,
+    "genre": "Art Rock",
+    "year": 2021,
     "albums": 2,
     "members": 5
   },

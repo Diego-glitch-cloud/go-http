@@ -1,0 +1,7 @@
+# Ignorar control de versiones
+.git
+.gitignore
+
+# Ignorar documentación y pruebas en la imagen final
+postman/
+README.md
